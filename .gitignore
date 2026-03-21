@@ -1,0 +1,25 @@
+# Rust build artifacts
+target/
+**/*.rs.bk
+
+# Cargo lock (keep for binaries, ignore for libraries)
+# Cargo.lock
+
+# Environment / secrets — never commit these
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+Cargo.lock
