@@ -38,6 +38,7 @@ pub mod config;
 pub mod error;
 pub mod secret;
 pub mod store;
+pub mod vault_client;
 
 pub use auth::AuthMethod;
 pub use config::VaultConfig;

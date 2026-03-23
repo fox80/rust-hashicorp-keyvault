@@ -409,6 +409,52 @@ impl SecretStore {
             .map(SecretInfo::from)
             .collect()
     }
+
+    // ── vault integration ────────────────────────────────────────────────
+
+    /// Fetch a secret value directly from HashiCorp Vault using AppRole auth.
+    ///
+    /// This method authenticates with AppRole and retrieves a secret from Vault.
+    /// Supports KV v1 and v2 with automatic path fallback.
+    ///
+    /// # Parameters
+    ///
+    /// - `role_id`: AppRole Role ID
+    /// - `secret_id`: AppRole Secret ID
+    /// - `bucket_path`: Vault secret path (e.g., `kv/data/myapp` or `kv/myapp`)
+    /// - `key`: Key name inside the secret
+    /// - `approle_mount_path`: Optional custom AppRole mount path
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use hashicorp_keyvault::SecretStore;
+    ///
+    /// # tokio::runtime::Runtime::new().unwrap().block_on(async {
+    /// let store = SecretStore::new();
+    /// let value = store.fetch_from_vault(
+    ///     "my-role-id",
+    ///     "my-secret-id",
+    ///     "kv/data/myapp",
+    ///     "password",
+    ///     None,
+    /// ).await.unwrap();
+    /// # })
+    /// ```
+    pub async fn fetch_from_vault(
+        &self,
+        role_id: &str,
+        secret_id: &str,
+        bucket_path: &str,
+        key: &str,
+        approle_mount_path: Option<&str>,
+    ) -> Result<String> {
+        use crate::vault_client::VaultClient;
+
+        let client = VaultClient::new(&self.config.address)?;
+        let token = client.login_with_approle(role_id, secret_id, approle_mount_path).await?;
+        client.fetch_secret_value(&token, bucket_path, key).await
+    }
 }
 
 impl Default for SecretStore {
