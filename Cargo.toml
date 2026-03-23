@@ -3,6 +3,7 @@ name = "hashicorp-keyvault"
 version = "0.1.0"
 edition = "2021"
 description = "A simple secret management crate for CRUD operations on secrets"
+license = "MIT"
 categories = ["authentication", "cryptography", "config"]
 keywords = ["hashicorp", "vault", "secrets", "keyvault"]
 
