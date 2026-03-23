@@ -3,6 +3,8 @@ name = "hashicorp-keyvault"
 version = "0.1.0"
 edition = "2021"
 description = "A simple secret management crate for CRUD operations on secrets"
+categories = ["authentication", "cryptography", "config"]
+keywords = ["hashicorp", "vault", "secrets", "keyvault"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
